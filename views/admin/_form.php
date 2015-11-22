@@ -18,9 +18,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'value')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'type')->dropDownList(
+        [
+            'string' => 'string',
+            'integer' => 'integer',
+            'boolean' => 'boolean',
+            'float' => 'float',
+            'array' => 'array',
+            'object' => 'object',
+            'null' => 'null'
+        ]
+    )->hint('Change at your own risk'); ?>
 
-    <?= $form->field($model, 'active')->textInput() ?>
+     <?= $form->field($model, 'active')->checkbox(['value' => 1]) ?>
 
 
     <div class="form-group">
