@@ -31,21 +31,13 @@ class DefaultController extends Controller {
                 }
             }
             Yii::$app->session->setFlash('success', "Processed {$count} records successfully.");
-           // return $this->redirect(['index']); // redirect to your next desired page
-            return $this->redirect(Yii::$app->request->referrer);
+           return $this->redirect(['index']); // redirect to your next desired page
         } else {
             return $this->render('index', [
                         'module' => $this->module,
                         'models' => $models,
             ]);
         }
-
-//            return $this->render('index', [
-//                        'module' => $this->module,
-//                        'models' => $models,
-//                        'html_text' => $html_text
-//            ]);
-//        }
     }
 
     protected function findModel($id) {
