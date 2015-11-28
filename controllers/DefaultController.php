@@ -20,8 +20,7 @@ class DefaultController extends Controller {
     public function actionIndex() {
 
         $models = Settings::find()->where(['module_name' => $this->module->modulename])->all();
-        if (Model::loadMultiple($models, Yii::$app->request->post()) &&
-                Model::validateMultiple($models)) {
+        if (Model::loadMultiple($models, Yii::$app->request->post()) && Model::validateMultiple($models)) {
             $count = 0;
             foreach ($models as $model) {
                 // populate and save records for each model
@@ -31,13 +30,17 @@ class DefaultController extends Controller {
                 }
             }
             Yii::$app->session->setFlash('success', "Processed {$count} records successfully.");
-           return $this->redirect(['index']); // redirect to your next desired page
+            return $this->redirect(['index']); // redirect to your next desired page
         } else {
             return $this->render('index', [
                         'module' => $this->module,
                         'models' => $models,
             ]);
         }
+    }
+
+    public function actionMessage() {
+        
     }
 
     protected function findModel($id) {
