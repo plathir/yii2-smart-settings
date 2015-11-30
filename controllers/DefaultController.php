@@ -4,8 +4,10 @@ namespace plathir\settings\controllers;
 
 use yii\web\Controller;
 use plathir\settings\models\Settings;
+use plathir\settings\models\SettingsSearch;
 use yii\base\Model;
 use yii;
+use yii\filters\VerbFilter;
 
 /**
  * @property \plathir\settings\Module $module
@@ -17,10 +19,22 @@ class DefaultController extends Controller {
         parent::__construct($id, $module);
     }
 
+    public function behaviors() {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                // 'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex() {
 
         $models = Settings::find()->where(['module_name' => $this->module->modulename])->all();
         if (Model::loadMultiple($models, Yii::$app->request->post()) && Model::validateMultiple($models)) {
+
             $count = 0;
             foreach ($models as $model) {
                 // populate and save records for each model
@@ -30,7 +44,8 @@ class DefaultController extends Controller {
                 }
             }
             Yii::$app->session->setFlash('success', "Processed {$count} records successfully.");
-            return $this->redirect(['index']); // redirect to your next desired page
+            return $this->goHome();
+            
         } else {
             return $this->render('index', [
                         'module' => $this->module,

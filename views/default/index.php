@@ -12,16 +12,14 @@ $this->title = Yii::t('app', 'Settings');
 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<h1><?= Html::encode($this->title) ?></h1>
 <div class="settings-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php $form = ActiveForm::begin(); ?>
     <?php
     foreach ($models as $i => $model) {
-     //  echo  plathir\settings\helpers\SettingsHelper::getHtmlforFormField($model);
-        echo $form->field($model, "[$i]value")->textInput(['maxlength' => true])->label($model->key_name);
+          eval(plathir\settings\helpers\SettingsHelper::getHtmlforFormField($model));
+      //  echo $form->field($model, "[$i]value")->textInput(['maxlength' => true])->label($model->key_name);
     }
     ?>
 
