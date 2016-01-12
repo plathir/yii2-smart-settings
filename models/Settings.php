@@ -33,7 +33,7 @@ class Settings extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['module_name', 'key_name', 'description', 'value', 'type', 'active'], 'required'],
+           // [['module_name', 'key_name', 'description', 'value', 'type', 'active'], 'required'],
             [['value'], 'string'],
             [['active', 'created_at', 'updated_at'], 'integer'],
             [['module_name', 'key_name', 'description', 'type'], 'string', 'max' => 255]
