@@ -51,7 +51,7 @@ class m190210_144644_SettingsModuleMigration extends Migration
             'active' => $this->integer(4)->notNull(),
             'created_at' => $this->integer(11)->notNull(),
             'updated_at' => $this->integer(11)->notNull(),
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
       
     }
 
