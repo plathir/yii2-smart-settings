@@ -2,7 +2,7 @@
 
 namespace plathir\settings\helpers;
 
-use plathir\settings\models\Settings;
+use plathir\settings\backend\models\Settings;
 use yii\base\View;
 
 class SettingsHelper {

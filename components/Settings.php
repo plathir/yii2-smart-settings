@@ -5,15 +5,15 @@ namespace plathir\settings\components;
 use yii\base\Component;
 use Yii;
 use yii\base\InvalidParamException;
-use plathir\settings\models\Settings as SettingsModel;
+use plathir\settings\backend\models\Settings as SettingsModel;
 
 
 /**
- *  @property \plathir\settings\Module $module
+ *  @property \plathir\settings\backend\Module $module
  */
 class Settings extends Component {
 
-    public $modelClass = 'plathir\settings\models\Setting';
+    public $modelClass = 'plathir\settings\backend\models\Setting';
     protected $model;
     public $modulename = '';
 

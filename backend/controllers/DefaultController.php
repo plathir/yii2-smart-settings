@@ -1,16 +1,16 @@
 <?php
 
-namespace plathir\settings\controllers;
+namespace plathir\settings\backend\controllers;
 
 use yii\web\Controller;
-use plathir\settings\models\Settings;
-use plathir\settings\models\SettingsSearch;
+use plathir\settings\backend\models\Settings;
+use plathir\settings\backend\models\SettingsSearch;
 use yii\base\Model;
 use yii;
 use yii\filters\VerbFilter;
 
 /**
- * @property \plathir\settings\Module $module
+ * @property \plathir\settings\backend\Module $module
  *
  */
 class DefaultController extends Controller {

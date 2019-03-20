@@ -1,6 +1,6 @@
 <?php
 
-namespace plathir\settings\models;
+namespace plathir\settings\backend\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;

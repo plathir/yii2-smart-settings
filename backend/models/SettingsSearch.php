@@ -1,11 +1,11 @@
 <?php
 
-namespace plathir\settings\models;
+namespace plathir\settings\backend\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use plathir\settings\models\Settings;
+use plathir\settings\backend\models\Settings;
 
 /**
  * SettingsSearch represents the model behind the search form about `app\models\Settings`.

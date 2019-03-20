@@ -1,10 +1,10 @@
 <?php
 
-namespace plathir\settings\controllers;
+namespace plathir\settings\backend\controllers;
 
 use Yii;
-use plathir\settings\models\Settings;
-use plathir\settings\models\SettingsSearch;
+use plathir\settings\backend\models\Settings;
+use plathir\settings\backend\models\SettingsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 
 /**
  * AdminController implements the CRUD actions for Settings model.
- *  @property \plathir\settings\Module $module
+ *  @property \plathir\settings\backend\Module $module
  */
 class AdminController extends Controller {
 
