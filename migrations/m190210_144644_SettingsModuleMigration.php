@@ -41,7 +41,7 @@ class m190210_144644_SettingsModuleMigration extends Migration
         $this->dropIfExist('settings');
         
         // Settings
-        $this->createTable('settings', [
+        $this->createTable('{{%settings}}', [
             'id' => $this->primaryKey(),
             'module_name' => $this->string(255)->notNull(),
             'key_name' => $this->string(255)->notNull(),
@@ -56,8 +56,8 @@ class m190210_144644_SettingsModuleMigration extends Migration
     }
 
     public function dropIfExist($tableName) {
-        if (in_array($tableName, $this->getDb()->schema->tableNames)) {
-            $this->dropTable($tableName);
+        if (in_array($this->db->tablePrefix .$tableName, $this->getDb()->schema->tableNames)) {
+            $this->dropTable($this->db->tablePrefix .$tableName);
         }
     }
 
