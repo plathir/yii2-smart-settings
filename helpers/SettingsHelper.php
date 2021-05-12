@@ -37,4 +37,20 @@ class SettingsHelper {
         }
     }
 
+    
+    public function getSettingsPermissionName($module_name) {
+        switch ($module_name) {
+            case 'site' :
+            case 'blog' :
+            case 'user' :
+                return 'SystemSettings';
+                break;
+            
+            default:
+                return ucfirst($module_name) .'Settings';
+                break;
+        }
+        
+    }
+    
 }

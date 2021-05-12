@@ -45,15 +45,15 @@ class Settings extends \yii\db\ActiveRecord {
      */
     public function attributeLabels() {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'module_name' => Yii::t('app', 'Module Name'),
-            'key_name' => Yii::t('app', 'Key Name'),
-            'description' => Yii::t('app', 'Description'),
-            'value' => Yii::t('app', 'Value'),
-            'type' => Yii::t('app', 'Type'),
-            'active' => Yii::t('app', 'Active'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'id' => Yii::t('settings', 'ID'),
+            'module_name' => Yii::t('settings', 'Module Name'),
+            'key_name' => Yii::t('settings', 'Key Name'),
+            'description' => Yii::t('settings', 'Description'),
+            'value' => Yii::t('settings', 'Value'),
+            'type' => Yii::t('settings', 'Type'),
+            'active' => Yii::t('settings', 'Active'),
+            'created_at' => Yii::t('settings', 'Created At'),
+            'updated_at' => Yii::t('settings', 'Updated At'),
         ];
     }
 

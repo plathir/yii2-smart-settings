@@ -15,8 +15,12 @@ use yii\filters\VerbFilter;
  */
 class DefaultController extends Controller {
 
+    public $permissionName;
+
     public function __construct($id, $module) {
         parent::__construct($id, $module);
+        $helper = new \plathir\settings\helpers\SettingsHelper();
+        $this->permissionName = $helper->getSettingsPermissionName($this->module->modulename);
     }
 
     public function behaviors() {
@@ -31,26 +35,29 @@ class DefaultController extends Controller {
     }
 
     public function actionIndex() {
+        
+        if (\yii::$app->user->can($this->permissionName)) {
+            $models = Settings::find()->where(['module_name' => $this->module->modulename])->all();
+            if (Model::loadMultiple($models, Yii::$app->request->post()) && Model::validateMultiple($models)) {
 
-        $models = Settings::find()->where(['module_name' => $this->module->modulename])->all();
-        if (Model::loadMultiple($models, Yii::$app->request->post()) && Model::validateMultiple($models)) {
-
-            $count = 0;
-            foreach ($models as $model) {
-                // populate and save records for each model
-                if ($model->save()) {
-                    // do something here after saving
-                    $count++;
+                $count = 0;
+                foreach ($models as $model) {
+                    // populate and save records for each model
+                    if ($model->save()) {
+                        // do something here after saving
+                        $count++;
+                    }
                 }
+                Yii::$app->session->setFlash('success', "Processed {$count} records successfully.");
+                return $this->goHome();
+            } else {
+                return $this->render('index', [
+                            'module' => $this->module,
+                            'models' => $models,
+                ]);
             }
-            Yii::$app->session->setFlash('success', "Processed {$count} records successfully.");
-            return $this->goHome();
-            
         } else {
-            return $this->render('index', [
-                        'module' => $this->module,
-                        'models' => $models,
-            ]);
+            throw new \yii\web\NotAcceptableHttpException(Yii::t('settings', 'No Permission to View Settings '.$this->permissionName));
         }
     }
 

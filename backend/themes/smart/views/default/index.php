@@ -16,7 +16,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php $form = ActiveForm::begin(); ?>
     <?php
+//    echo '<pre>';
+//    echo $models[0]["module_name"] .'<br>';
+//  //  print_r(\Yii::$app->getModule($models[0]["module_name"]));
+//  //  print_r($models);
+//    echo '</pre>';
     foreach ($models as $i => $model) {
+        
           eval(plathir\settings\helpers\SettingsHelper::getHtmlforFormField($model));
       //  echo $form->field($model, "[$i]value")->textInput(['maxlength' => true])->label($model->key_name);
     }

@@ -9,15 +9,18 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-
 /**
  * AdminController implements the CRUD actions for Settings model.
  *  @property \plathir\settings\backend\Module $module
  */
 class AdminController extends Controller {
 
+    public $permissionName;
+
     public function __construct($id, $module) {
         parent::__construct($id, $module);
+        $helper = new \plathir\settings\helpers\SettingsHelper();
+        $this->permissionName = $helper->getSettingsPermissionName($this->module->modulename);
     }
 
     public function behaviors() {
@@ -36,14 +39,18 @@ class AdminController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        $searchModel = new SettingsSearch(['module_name'=> $this->module->modulename]);
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-        return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-                    'module' => $this->module
-        ]);
+        if (\yii::$app->user->can($this->permissionName)) {
+            $searchModel = new SettingsSearch(['module_name' => $this->module->modulename]);
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+            return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                        'module' => $this->module
+            ]);
+        } else {
+            throw new \yii\web\NotAcceptableHttpException(Yii::t('settings', 'No Permission to View Settings ' . $this->permissionName));
+        }
     }
 
     /**
@@ -52,9 +59,13 @@ class AdminController extends Controller {
      * @return mixed
      */
     public function actionView($id) {
-        return $this->render('view', [
-                    'model' => $this->findModel($id),
-        ]);
+        if (\yii::$app->user->can($this->permissionName)) {
+            return $this->render('view', [
+                        'model' => $this->findModel($id),
+            ]);
+        } else {
+            throw new \yii\web\NotAcceptableHttpException(Yii::t('settings', 'No Permission to View Settings ' . $this->permissionName));
+        }
     }
 
     /**
@@ -63,15 +74,19 @@ class AdminController extends Controller {
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Settings();
-        $model->module_name = $this->module->modulename;
+        if (\yii::$app->user->can($this->permissionName)) {
+            $model = new Settings();
+            $model->module_name = $this->module->modulename;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                            'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('create', [
-                        'model' => $model,
-            ]);
+            throw new \yii\web\NotAcceptableHttpException(Yii::t('settings', 'No Permission to Create Setting ' . $this->permissionName));
         }
     }
 
@@ -82,14 +97,18 @@ class AdminController extends Controller {
      * @return mixed
      */
     public function actionUpdate($id) {
-        $model = $this->findModel($id);
-        $model->module_name = $this->module->modulename;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (\yii::$app->user->can($this->permissionName)) {
+            $model = $this->findModel($id);
+            $model->module_name = $this->module->modulename;
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                            'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('update', [
-                        'model' => $model,
-            ]);
+            throw new \yii\web\NotAcceptableHttpException(Yii::t('settings', 'No Permission to Update Setting ' . $this->permissionName));
         }
     }
 
@@ -100,9 +119,13 @@ class AdminController extends Controller {
      * @return mixed
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
+        if (\yii::$app->user->can($this->permissionName)) {
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        } else {
+            throw new \yii\web\NotAcceptableHttpException(Yii::t('settings', 'No Permission to Delete Setting ' . $this->permissionName));
+        }
     }
 
     /**
@@ -114,7 +137,7 @@ class AdminController extends Controller {
      */
     protected function findModel($id) {
         //find()->where(['module_name' => $this->module->modulename])->all()
-        if (($model = Settings::find()->where(['id'=>$id,'module_name' => $this->module->modulename])->one()) !== null) {
+        if (($model = Settings::find()->where(['id' => $id, 'module_name' => $this->module->modulename])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
